@@ -23,8 +23,8 @@ def totalPriceTxtWthSpc(lines) :
     totalPrice = 0.00
     for line in lines :
         if line[0] == 'RechnPos' :
-            pricing = Line4(line)
-            totalPrice = totalPrice + float(pricing.price)
-    price =str('%.2f' % totalPrice)
-    p = price.split('.')
+            price = Line4(line)
+            totalPrice = totalPrice + float(price.totalPrice)
+    price2 =str('%.2f' % totalPrice)
+    p = price2.split('.')
     return p[0] + ' . ' + p[1]
