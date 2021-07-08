@@ -18,6 +18,10 @@ class Line1:
         self.time = self.__time()
         self.daysTillPay = self.__daysTillPay()
         self.calculateDueDate = self.__calculateDueDate()
+        self.dueDateStamp = self.__dueDateStamp()
+        self.dateTimeStamp = self.__dateTimeStamp()
+        self.dateStamp = self.__dateStamp()
+
 
     def __invoiceNr(self) :
         if not re.match('Rechnung_\d{5}', self.__line[0]) :
@@ -52,3 +56,20 @@ class Line1:
     def __calculateDueDate (self) :
         date = datetime.strptime(self.__date(), '%d.%m.%Y') + timedelta(days=int(self.__daysTillPay()))
         return date.strftime('%d.%m.%Y')
+
+    def __dueDateStamp(self):
+        return ''.join(reversed(self.__calculateDueDate().split('.')))
+
+    def __dateTimeStamp(self) :
+        date = self.__date().split('.')
+        time = self.__time().split(':')
+        time.insert(1, '0')
+        times = []
+        for t in time :
+            times.append(t [::-1])   
+        return ''.join(reversed(date)) +  ''.join(reversed(times))
+
+    def __dateStamp(self) :
+        return ''.join(reversed(self.__date().split('.')))
+
+    
