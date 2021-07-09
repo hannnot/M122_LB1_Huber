@@ -4,7 +4,7 @@ import re
 class Line3:
     def __init__(self, line) -> None:
         if 'Endkunde' not in line[0]:
-            sys.exit() #TODO after errors
+            sys.exit()
         else :
             self.__line = line
             self.__getValue()
@@ -22,19 +22,23 @@ class Line3:
     def __customerID (self) :
         if not re.match(r'\d{17}', self.__line[1]) :
             print('error! customer ID has incorrect format')
+            sys.exit()
         return self.__line[1]
 
     def __name (self) :
         if len(self.__line[2]) < 1 :
             print('error! No name provided')
+            sys.exit()
         return self.__line[2]
 
     def __address (self) :
         if len(self.__line[3]) < 1 :
             print('error! No address provided')
+            sys.exit()
         return self.__line[3]
 
     def __zip (self) :
         if len(self.__line[4]) < 1 :
             print('error! No place provided')
+            sys.exit()
         return self.__line[4]

@@ -2,6 +2,7 @@ import os
 from fileGenerator import FileGenerator
 from ftplib import FTP
 import csv
+import sys
 
 print('welcome to eBilling!')
 
@@ -16,9 +17,11 @@ filesineed = [filename for filename in ftp.nlst() if '.data' in filename]
 if len(filesineed) > 0:
     ftp.retrbinary("RETR " + filesineed[0], open(path+'\\'+filesineed[0], 'wb').write)
     invoiceData = invoiceData+ path+ '\\' + filesineed[0]
-    #ftp.delete(filesineed[0])
-ftp.quit()
-print('file has been downloaded!')
+    ftp.delete(filesineed[0])
+    ftp.quit()
+    print('file has been downloaded!')
+else :
+    sys.exit()
 
 #separate csv
 def readInvoiceData():
@@ -55,6 +58,4 @@ for file in files :
         newPath = path + '\\' + file
         ftp2.storbinary('STOR ' + file, file1)
         file1.close()
-    #os.remove(newPath)
 ftp2.quit()
-#os.remove('C:\\Users\\ayesh\\git\\M122_LB2_Huber\\' + invoiceData)

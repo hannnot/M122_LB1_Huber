@@ -38,21 +38,25 @@ class Line1:
     def __city (self) :
         if len(self.__line[2]) < 1 :
             print('error! No city provided')
+            sys.exit()
         return self.__line[2]
 
     def __date (self) :
         if not re.match('\d{2}\.\d{2}\.\d{4}', self.__line[3]) :
             print('error! Date has incorrect format')
+            sys.exit()
         return self.__line[3]
 
     def __time (self) :
         if not re.match('\d{2}\:\d{2}\:\d{2}', self.__line[4]) :
             print('error! wrong time format!')
+            sys.exit()
         return self.__line[4]
 
     def __daysTillPay (self) :
         if not re.match('ZahlungszielInTagen_\d{2}', self.__line[5]) :
             print('error! Days until Pay is incorrect format!')
+            sys.exit()
         return self.__line[5].split('_')[1]
 
     def __calculateDueDate (self) :
