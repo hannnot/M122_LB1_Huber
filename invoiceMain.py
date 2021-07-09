@@ -1,6 +1,6 @@
+import os
 from fileGenerator import FileGenerator
 from ftplib import FTP
-import re
 import csv
 
 print('welcome to eBilling!')
@@ -8,18 +8,21 @@ print('welcome to eBilling!')
 #connect to ftp
 ftp = FTP('ftp.haraldmueller.ch', 'schoolerinvoices', 'Berufsschule8005!')
 ftp.cwd('out/AP18cHuber')
-print(ftp.dir())
+invoiceData = ''
+path = 'C:\\Users\\ayesh\\git\\M122_LB2_Huber\\invoices'
 
 #get .data file at position 0
 filesineed = [filename for filename in ftp.nlst() if '.data' in filename]
 if len(filesineed) > 0:
-    ftp.retrbinary("RETR " + filesineed[0], open(filesineed[0], 'wb').write)
+    ftp.retrbinary("RETR " + filesineed[0], open(path+'\\'+filesineed[0], 'wb').write)
+    invoiceData = invoiceData+ path+ '\\' + filesineed[0]
+    #ftp.delete(filesineed[0])
 ftp.quit()
 print('file has been downloaded!')
 
 #separate csv
 def readInvoiceData():
-    with open('rechnung21003.data', 'r', encoding="utf-8") as csvFile:
+    with open(invoiceData, 'r', encoding="utf-8") as csvFile:
         rows = list(csv.reader(csvFile, delimiter=';'))
         csvFile.close()
         if len(rows) < 4:
@@ -42,3 +45,16 @@ def readInvoiceData():
 
 rows = readInvoiceData()
 FileGenerator(rows)
+
+ftp2 = FTP('134.119.225.245', '310721-297-zahlsystem', 'Berufsschule8005!')
+ftp2.cwd('in/AP18cHuber')
+path = 'C:\\Users\\ayesh\\git\\M122_LB2_Huber\\invoices'
+files = os.listdir(path)
+for file in files :
+    with open(path +'\\'+ file, "rb") as file1 :
+        newPath = path + '\\' + file
+        ftp2.storbinary('STOR ' + file, file1)
+        file1.close()
+    #os.remove(newPath)
+ftp2.quit()
+#os.remove('C:\\Users\\ayesh\\git\\M122_LB2_Huber\\' + invoiceData)

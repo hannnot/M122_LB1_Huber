@@ -12,7 +12,7 @@ class FileGenerator() :
         self.txt = self.__genTxtFile()
 
     def __openXmlFile(self) :
-        with open('invoice.xml', encoding='uft-8') as file :
+        with open('invoice.xml') as file :
             string = file.read()
             file.close()
         return string
@@ -47,7 +47,7 @@ class FileGenerator() :
             l1.dueDateStamp
         )
         try:
-            with open(fileName, 'w', encoding='utf-8') as file:
+            with open('invoices/'+ fileName, 'w', encoding='utf-8') as file:
                 file.write(xmlFile)
                 file.close()
             print('XML file has been created!')
@@ -69,7 +69,7 @@ class FileGenerator() :
         txt[4] = l2.name
         txt[5] = l2.address
         txt[6] = l2.zip
-        txt[8] = l2.customerID
+        txt[8] = l2.taxID
         txt[13] = '{:<48s}{:<}'.format(source, l3.name)
         txt[14] = '{:<48s}{:<}'.format('', l3.address)
         txt[15] = '{:<48s}{:<}'.format('', l3.zip)
@@ -79,14 +79,14 @@ class FileGenerator() :
         txt[21] = '------------------------'
         for item in listOfItems:
             i = Line4(item)
-            txt[21 + int(i.positionNr)] = '{:4s}{:<4s}{:<44s}{:<4s}{:>11s}{:<5s}{:>11s}{:>7}'.format(
-                '', i.positionNr, i.itemDescription, i.quantity, i.pricePerItem, '  CHF', i.price, i.mwst)
+            txt[21 + int(i.billPosNo)] = '{:4s}{:<4s}{:<44s}{:<4s}{:>11s}{:<5s}{:>11s}{:>7}'.format(
+                '', i.billPosNo, i.billPosDesc, i.quantity, i.itemPrice, '  CHF', i.totalPrice, i.mwst)
         txt[22 + len(listOfItems)] = '{:>83}'.format('-----------')
         txt[23 + len(listOfItems)] = '{:>68}{:>15}'.format(
             'Total CHF', totalPriceTxt(self.__lines))
         txt[25 + len(listOfItems)] = '{:>68}{:>15}'.format('Mwst  CHF', '0.00')
         txt[44] = 'Zahlungsziel ohne Abzug {} Tage ({})'.format(
-            l1.payWaitTime, l1.payDueDate)
+            l1.daysTillPay, l1.calculateDueDate)
         txt[46] = 'Einzahlungsschein'
         txt[58] = '{:>13s}{:>29s}{:<5s}{:<}'.format(totalPriceTxtWthSpc(
             self.__lines), totalPriceTxtWthSpc(self.__lines), '', l3.name)
@@ -96,8 +96,8 @@ class FileGenerator() :
         txt[63] = l3.address
         txt[64] = l3.zip
         try:
-            with open(fileName, 'w', encoding='utf-8') as file:
-                file.write(txt)
+            with open('invoices/'+ fileName, 'w', encoding='utf-8') as file:
+                file.write('\n'.join(txt))
                 file.close()
             print('TXT file has been created!')
         except:

@@ -20,12 +20,12 @@ class Line4:
 
 
     def __billPosNo (self) :
-        if len(self.__line[1]) < 1 :
+        if self.__line[1] == '' :
             print('error! No bill number position provided')
         return self.__line[1]
 
     def __billPosDesc (self) :
-        if len(self.__line[2]) < 1 :
+        if self.__line[2] == '' :
             print('error! No bill number position provided')
         return self.__line[2]
 

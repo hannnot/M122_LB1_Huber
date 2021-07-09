@@ -53,10 +53,10 @@ class Line1:
     def __daysTillPay (self) :
         if not re.match('ZahlungszielInTagen_\d{2}', self.__line[5]) :
             print('error! Days until Pay is incorrect format!')
-        return self.__line[5]
+        return self.__line[5].split('_')[1]
 
     def __calculateDueDate (self) :
-        date = datetime.strptime(self.__date(), '%d.%m.%Y') + timedelta(days=int(self.__daysTillPay()))
+        date = datetime.strptime(self.__line[3], '%d.%m.%Y') + timedelta(days=int(self.__daysTillPay()))
         return date.strftime('%d.%m.%Y')
 
     def __dueDateStamp(self):
