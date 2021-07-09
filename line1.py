@@ -26,11 +26,13 @@ class Line1:
     def __invoiceNr(self) :
         if not re.match('Rechnung_\d{5}', self.__line[0]) :
             print('error! orderNr has incorrect format')
+            sys.exit()
         return self.__line[0].split('_')[1]
 
     def __orderNr (self) :
         if not re.match('Auftrag_A\d{3}', self.__line[1]) :
             print('error! orderNr has incorrect format')
+            sys.exit()
         return self.__line[1]
 
     def __city (self) :

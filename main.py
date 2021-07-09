@@ -1,3 +1,4 @@
+from fileGenerator import FileGenerator
 from ftplib import FTP
 import re
 import csv
@@ -39,10 +40,5 @@ def readInvoiceData():
                         print('Invoice line item missing or corrupted')
                 return rows
 
-#create classes from csv
-
-
 rows = readInvoiceData()
-l1 = Line1(rows[0])
-print(l1.city)
-print(l1.date)
+FileGenerator(rows)
