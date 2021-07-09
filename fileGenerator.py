@@ -1,5 +1,5 @@
 from line4 import Line4
-from helper import totalPriceXml
+from helper import totalPriceXml, totalPriceTxt, totalPriceTxtWthSpc
 from line1 import Line1
 from line2 import Line2
 from line3 import Line3
@@ -47,8 +47,7 @@ class FileGenerator() :
             l1.dueDateStamp
         )
         try:
-            path = 'cache\\{}\\'.format(l1.invoiceNr)
-            with open(path + fileName, 'w', encoding='utf-8') as file:
+            with open(fileName, 'w', encoding='utf-8') as file:
                 file.write(xmlFile)
                 file.close()
             print('XML file has been created!')
@@ -84,16 +83,23 @@ class FileGenerator() :
                 '', i.positionNr, i.itemDescription, i.quantity, i.pricePerItem, '  CHF', i.price, i.mwst)
         txt[22 + len(listOfItems)] = '{:>83}'.format('-----------')
         txt[23 + len(listOfItems)] = '{:>68}{:>15}'.format(
-            'Total CHF', getPriceTotalForTxt(self.__rows))
+            'Total CHF', totalPriceTxt(self.__lines))
         txt[25 + len(listOfItems)] = '{:>68}{:>15}'.format('Mwst  CHF', '0.00')
         txt[44] = 'Zahlungsziel ohne Abzug {} Tage ({})'.format(
             l1.payWaitTime, l1.payDueDate)
         txt[46] = 'Einzahlungsschein'
-        txt[58] = '{:>13s}{:>29s}{:<5s}{:<}'.format(getPriceTotalForTxtWithSpacing(
-            self.__lines), getPriceTotalForTxtWithSpacing(self.__lines), '', l3.name)
+        txt[58] = '{:>13s}{:>29s}{:<5s}{:<}'.format(totalPriceTxtWthSpc(
+            self.__lines), totalPriceTxtWthSpc(self.__lines), '', l3.name)
         txt[59] = '{:<47}{}'.format('', l3.address)
         txt[60] = '{:<47}{}'.format('0 00000 00000 00000', l3.zip)
         txt[62] = l3.name
         txt[63] = l3.address
         txt[64] = l3.zip
+        try:
+            with open(fileName, 'w', encoding='utf-8') as file:
+                file.write(txt)
+                file.close()
+            print('TXT file has been created!')
+        except:
+            print('TXT file has failed.')
 
